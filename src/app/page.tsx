@@ -55,130 +55,339 @@ const experience = [
 ];
 
 export default function Home() {
+  // Animation variants for "wild" effects
+  const staggerContainer = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const floatPulse = {
+    animate: {
+      y: [0, -10, 0, 10, 0],
+      rotate: [0, 5, 0, -5, 0],
+      scale: [1, 1.05, 1, 0.98, 1],
+      transition: {
+        duration: 4,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const iconWild = {
+    initial: { opacity: 0, y: 50, scale: 0.6, rotate: -40 },
+    animate: { opacity: 1, y: 0, scale: 1.2, rotate: 0 },
+    transition: {
+      type: "spring",
+      stiffness: 500,
+      damping: 18,
+      mass: 0.7,
+    },
+    whileHover: {
+      scale: 1.35,
+      rotate: 10,
+      boxShadow: "0 0 30px 0 var(--primary)",
+      transition: { type: "spring", stiffness: 250, damping: 8 },
+    },
+    whileTap: {
+      scale: 0.9,
+      rotate: -10,
+      transition: { type: "spring", stiffness: 300, damping: 15 },
+    },
+  };
+
+  const wildGradientBorder = {
+    animate: {
+      background:
+        "linear-gradient(120deg, #ff8c43, #6c63ff, #43e8ff, #ff43c6, #ff8c43)",
+      backgroundSize: "400% 400%",
+      filter: [
+        "blur(8px)",
+        "blur(12px)",
+        "blur(8px)"
+      ],
+      transition: {
+        backgroundPosition: {
+          duration: 16,
+          repeat: Infinity,
+          ease: "linear",
+        },
+        filter: { duration: 3, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
+      },
+    },
+  };
+
   return (
     <div className="flex justify-center px-5 py-5 md:py-12">
       <div className="min-h-[90vh] max-w-[690px]">
         <motion.header
           className="mb-10 flex flex-col-reverse items-start justify-between gap-5 md:flex-row md:gap-20"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, ease: "easeOut" }}
+          initial="hidden"
+          animate="show"
+          variants={staggerContainer}
         >
           <div>
             <motion.h1
               className="mb-4 text-4xl font-bold md:text-5xl"
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -80, scale: 0.8, rotate: -10 }}
+              animate={{ opacity: 1, x: 0, scale: 1.1, rotate: 0 }}
+              transition={{ duration: 1.1, delay: 0.2, type: "spring", bounce: 0.6 }}
             >
-              Cameron Nimmo
+              <motion.span
+                initial={{ color: "#000" }}
+                animate={{ color: ["#ff8c43", "#43e8ff", "#6c63ff", "#ff43c6", "#ff8c43"] }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                }}
+                style={{ display: "inline-block" }}
+              >
+                Cameron Nimmo
+              </motion.span>
             </motion.h1>
             <motion.p
               className="mb-2.5 text-lg"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -60, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 1, delay: 0.4, type: "spring", bounce: 0.7 }}
             >
               Generalist Full Stack Engineer with 5+ years of experience
             </motion.p>
             <motion.div
               className="text-neutral mb-4 text-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.6, type: "spring" }}
             >
               London, UK
             </motion.div>
             <motion.div
               className="flex gap-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: {},
+                show: {
+                  transition: {
+                    staggerChildren: 0.14,
+                    delayChildren: 0.8,
+                  },
+                },
+              }}
             >
-              {links.map((link) => (
-                <a
+              {links.map((link, idx) => (
+                <motion.a
                   key={link.href}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:border-primary border-primary-light hover:text-primary-dark rounded-md border p-1.5 transition-all hover:scale-110 focus:scale-110 active:scale-95 shadow-sm hover:shadow-lg"
+                  className="text-primary hover:border-primary border-primary-light hover:text-primary-dark rounded-md border p-1.5 transition-all shadow-sm relative overflow-hidden"
                   style={{ willChange: "transform" }}
+                  initial={iconWild.initial}
+                  animate={iconWild.animate}
+                  transition={{
+                    ...iconWild.transition,
+                    delay: 0.9 + idx * 0.15,
+                  }}
+                  whileHover={iconWild.whileHover}
+                  whileTap={iconWild.whileTap}
                 >
-                  {link.icon}
-                </a>
+                  <span className="absolute inset-0 z-0 bg-gradient-to-br from-pink-400 via-sky-400 to-amber-400 opacity-30 blur-[6px] pointer-events-none"></span>
+                  <span className="relative z-10">{link.icon}</span>
+                </motion.a>
               ))}
             </motion.div>
           </div>
           <motion.div
-            initial={{ opacity: 0, scale: 0.85, rotate: 10 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.9, delay: 0.3, type: "spring" }}
+            initial={{ opacity: 0, scale: 0.7, rotate: 18, filter: "blur(6px)" }}
+            animate={{ opacity: 1, scale: 1, rotate: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1, delay: 0.6, type: "spring", bounce: 0.65 }}
             className="relative"
+            style={{ willChange: "transform, filter" }}
           >
-            <span className="absolute inset-0 z-0 rounded-2xl bg-gradient-to-br from-primary via-primary-light to-primary-dark opacity-40 blur-[8px] animate-pulse"></span>
-            <Image
-              src={profilePic}
-              alt="Cameron Nimmo"
-              className="aspect-square h-auto w-30 rounded-2xl object-cover md:w-40 relative z-10 shadow-lg"
-            />
+            <motion.span
+              className="absolute inset-0 z-0 rounded-2xl"
+              variants={wildGradientBorder}
+              animate="animate"
+              style={{
+                background:
+                  "linear-gradient(120deg, #ff8c43, #6c63ff, #43e8ff, #ff43c6, #ff8c43)",
+                backgroundSize: "400% 400%",
+                opacity: 0.55,
+                filter: "blur(10px)",
+              }}
+            ></motion.span>
+            <motion.div
+              className="relative z-10"
+              variants={floatPulse}
+              animate="animate"
+            >
+              <Image
+                src={profilePic}
+                alt="Cameron Nimmo"
+                className="aspect-square h-auto w-30 rounded-2xl object-cover md:w-40 shadow-2xl border-4 border-transparent"
+                style={{ boxShadow: "0 0 50px 5px rgba(67,232,255,0.2)" }}
+              />
+            </motion.div>
           </motion.div>
         </motion.header>
         <main>
           <motion.section
             className="mb-9"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 60, scale: 0.85, rotate: -5 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 1, ease: "anticipate", type: "spring", bounce: 0.7 }}
           >
-            <h2 className="mb-3 text-2xl font-bold uppercase">About me</h2>
-            <p className="text-lg">
+            <motion.h2
+              className="mb-3 text-2xl font-bold uppercase"
+              initial={{ letterSpacing: "-0.2em" }}
+              animate={{ letterSpacing: "0.08em" }}
+              transition={{
+                duration: 1,
+                yoyo: Infinity,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut",
+              }}
+            >
+              About me
+            </motion.h2>
+            <motion.p
+              className="text-lg"
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.2, delay: 0.15, type: "spring", bounce: 0.8 }}
+              viewport={{ once: true }}
+            >
               A generalist full stack engineer with a pragmatic approach to
               delivery and a focus on maintainability. Praised for my
               leadership, communication and mentoring skills, as well as my
               strong understanding of commercial concerns and user needs.
               Building products that deliver real value to real people.
-            </p>
+            </motion.p>
           </motion.section>
           <motion.section
             className="mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 70, scale: 0.85, rotate: 4 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            transition={{ duration: 1.05, delay: 0.1, ease: "anticipate", type: "spring", bounce: 0.6 }}
           >
-            <h2 className="mb-5 text-2xl font-bold uppercase">Experience</h2>
-            {experience.map((exp, i) => (
-              <motion.article
-                key={exp.title}
-                className="mb-7"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.7,
-                  delay: 0.1 + i * 0.1,
-                  ease: "easeOut",
-                }}
-              >
-                <header className="mb-2 flex flex-col-reverse justify-between md:flex-row">
-                  <h3 className="text-xl font-bold">{exp.title}</h3>
-                  <p className="text-neutral text-lg">{exp.date}</p>
-                </header>
-                <p className="mb-2 text-lg">
-                  <a
-                    href={exp.company.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-primary-dark underline"
+            <motion.h2
+              className="mb-5 text-2xl font-bold uppercase"
+              initial={{ letterSpacing: "-0.2em" }}
+              animate={{ letterSpacing: "0.08em" }}
+              transition={{
+                duration: 1.1,
+                yoyo: Infinity,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut",
+              }}
+            >
+              Experience
+            </motion.h2>
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={{
+                hidden: {},
+                show: {
+                  transition: {
+                    staggerChildren: 0.13,
+                    delayChildren: 0.3,
+                  },
+                },
+              }}
+            >
+              {experience.map((exp, i) => (
+                <motion.article
+                  key={exp.title}
+                  className="mb-7"
+                  initial={{
+                    opacity: 0,
+                    y: 90,
+                    scale: 0.7,
+                    rotate: Math.random() > 0.5 ? 7 : -7,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    rotate: 0,
+                  }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 1,
+                    delay: 0.15 + i * 0.16,
+                    type: "spring",
+                    bounce: 0.75,
+                  }}
+                  whileHover={{
+                    scale: 1.04,
+                    rotate: Math.random() > 0.5 ? 3 : -3,
+                    boxShadow: "0 4px 40px 0 rgba(255,140,67,0.13)",
+                    transition: { type: "spring", stiffness: 170, damping: 7 },
+                  }}
+                  style={{ willChange: "transform, box-shadow" }}
+                >
+                  <header className="mb-2 flex flex-col-reverse justify-between md:flex-row">
+                    <motion.h3
+                      className="text-xl font-bold"
+                      initial={{ scale: 0.8, rotate: -10 }}
+                      whileInView={{ scale: 1, rotate: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.7, delay: 0.1, type: "spring", bounce: 0.7 }}
+                    >
+                      {exp.title}
+                    </motion.h3>
+                    <motion.p
+                      className="text-neutral text-lg"
+                      initial={{ opacity: 0, x: 40 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, delay: 0.16, type: "spring" }}
+                    >
+                      {exp.date}
+                    </motion.p>
+                  </header>
+                  <motion.p
+                    className="mb-2 text-lg"
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.19, type: "spring", bounce: 0.7 }}
+                    viewport={{ once: true }}
                   >
-                    {exp.company.name}
-                  </a>{" "}
-                  · {exp.location}
-                </p>
-                <p className="text-neutral text-lg">{exp.summary}</p>
-              </motion.article>
-            ))}
+                    <a
+                      href={exp.company.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-primary-dark underline"
+                    >
+                      {exp.company.name}
+                    </a>{" "}
+                    · {exp.location}
+                  </motion.p>
+                  <motion.p
+                    className="text-neutral text-lg"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.95, delay: 0.24, type: "spring", bounce: 0.8 }}
+                    viewport={{ once: true }}
+                  >
+                    {exp.summary}
+                  </motion.p>
+                </motion.article>
+              ))}
+            </motion.div>
           </motion.section>
         </main>
       </div>
