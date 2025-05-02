@@ -7,9 +7,8 @@ const bodyFont = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "Cameron Nimmo - Full Stack Engineer",
+  title: "Cameron Nimmo - AI NaTIVE ENGINEER 👷‍♀️",
   description: "Generalist Full Stack Engineer with 5+ years of experience",
-
 };
 
 export default function RootLayout({
