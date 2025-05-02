@@ -1,6 +1,7 @@
 import { Mail, Linkedin, Github } from "lucide-react";
 import Image from "next/image";
 import profilePic from "./me.jpg";
+import { motion } from "framer-motion";
 
 const links = [
   {
@@ -57,37 +58,79 @@ export default function Home() {
   return (
     <div className="flex justify-center px-5 py-5 md:py-12">
       <div className="min-h-[90vh] max-w-[690px]">
-        <header className="mb-10 flex flex-col-reverse items-start justify-between gap-5 md:flex-row md:gap-20">
+        <motion.header
+          className="mb-10 flex flex-col-reverse items-start justify-between gap-5 md:flex-row md:gap-20"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, ease: "easeOut" }}
+        >
           <div>
-            <h1 className="mb-4 text-4xl font-bold md:text-5xl">
+            <motion.h1
+              className="mb-4 text-4xl font-bold md:text-5xl"
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            >
               Cameron Nimmo
-            </h1>
-            <p className="mb-2.5 text-lg">
+            </motion.h1>
+            <motion.p
+              className="mb-2.5 text-lg"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+            >
               Generalist Full Stack Engineer with 5+ years of experience
-            </p>
-            <div className="text-neutral mb-4 text-lg">London, UK</div>
-            <div className="flex gap-2">
+            </motion.p>
+            <motion.div
+              className="text-neutral mb-4 text-lg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
+            >
+              London, UK
+            </motion.div>
+            <motion.div
+              className="flex gap-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+            >
               {links.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:border-primary border-primary-light hover:text-primary-dark rounded-md border p-1.5 transition-all"
+                  className="text-primary hover:border-primary border-primary-light hover:text-primary-dark rounded-md border p-1.5 transition-all hover:scale-110 focus:scale-110 active:scale-95 shadow-sm hover:shadow-lg"
+                  style={{ willChange: "transform" }}
                 >
                   {link.icon}
                 </a>
               ))}
-            </div>
+            </motion.div>
           </div>
-          <Image
-            src={profilePic}
-            alt="Cameron Nimmo"
-            className="aspect-square h-auto w-30 rounded-2xl object-cover md:w-40"
-          />
-        </header>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, rotate: 10 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 0.9, delay: 0.3, type: "spring" }}
+            className="relative"
+          >
+            <span className="absolute inset-0 z-0 rounded-2xl bg-gradient-to-br from-primary via-primary-light to-primary-dark opacity-40 blur-[8px] animate-pulse"></span>
+            <Image
+              src={profilePic}
+              alt="Cameron Nimmo"
+              className="aspect-square h-auto w-30 rounded-2xl object-cover md:w-40 relative z-10 shadow-lg"
+            />
+          </motion.div>
+        </motion.header>
         <main>
-          <section className="mb-9">
+          <motion.section
+            className="mb-9"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
             <h2 className="mb-3 text-2xl font-bold uppercase">About me</h2>
             <p className="text-lg">
               A generalist full stack engineer with a pragmatic approach to
@@ -96,11 +139,28 @@ export default function Home() {
               strong understanding of commercial concerns and user needs.
               Building products that deliver real value to real people.
             </p>
-          </section>
-          <section className="mb-8">
+          </motion.section>
+          <motion.section
+            className="mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+          >
             <h2 className="mb-5 text-2xl font-bold uppercase">Experience</h2>
-            {experience.map((exp) => (
-              <article key={exp.title} className="mb-7">
+            {experience.map((exp, i) => (
+              <motion.article
+                key={exp.title}
+                className="mb-7"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.7,
+                  delay: 0.1 + i * 0.1,
+                  ease: "easeOut",
+                }}
+              >
                 <header className="mb-2 flex flex-col-reverse justify-between md:flex-row">
                   <h3 className="text-xl font-bold">{exp.title}</h3>
                   <p className="text-neutral text-lg">{exp.date}</p>
@@ -117,9 +177,9 @@ export default function Home() {
                   · {exp.location}
                 </p>
                 <p className="text-neutral text-lg">{exp.summary}</p>
-              </article>
+              </motion.article>
             ))}
-          </section>
+          </motion.section>
         </main>
       </div>
     </div>
