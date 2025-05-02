@@ -66,6 +66,17 @@ export default function Home() {
     },
   };
 
+  // Framer Motion animation variants and props
+  const staggerContainer = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
   const floatPulse = {
     animate: {
       y: [0, -10, 0, 10, 0],
@@ -79,46 +90,42 @@ export default function Home() {
     },
   };
 
-  const iconWild = {
-    initial: { opacity: 0, y: 50, scale: 0.6, rotate: -40 },
-    animate: { opacity: 1, y: 0, scale: 1.2, rotate: 0 },
-    transition: {
-      type: "spring",
-      stiffness: 500,
-      damping: 18,
-      mass: 0.7,
-    },
-    whileHover: {
-      scale: 1.35,
-      rotate: 10,
-      boxShadow: "0 0 30px 0 var(--primary)",
-      transition: { type: "spring", stiffness: 250, damping: 8 },
-    },
-    whileTap: {
-      scale: 0.9,
-      rotate: -10,
-      transition: { type: "spring", stiffness: 300, damping: 15 },
-    },
+  const iconWildInitial = { opacity: 0, y: 50, scale: 0.6, rotate: -40 };
+  const iconWildAnimate = { opacity: 1, y: 0, scale: 1.2, rotate: 0 };
+  const iconWildTransition = {
+    type: "spring",
+    stiffness: 500,
+    damping: 18,
+    mass: 0.7,
+  };
+  const iconWildWhileHover = {
+    scale: 1.35,
+    rotate: 10,
+    boxShadow: "0 0 30px 0 var(--primary)",
+    transition: { type: "spring", stiffness: 250, damping: 8 },
+  };
+  const iconWildWhileTap = {
+    scale: 0.9,
+    rotate: -10,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
   };
 
-  const wildGradientBorder = {
-    animate: {
-      background:
-        "linear-gradient(120deg, #ff8c43, #6c63ff, #43e8ff, #ff43c6, #ff8c43)",
-      backgroundSize: "400% 400%",
-      filter: [
-        "blur(8px)",
-        "blur(12px)",
-        "blur(8px)"
-      ],
-      transition: {
-        backgroundPosition: {
-          duration: 16,
-          repeat: Infinity,
-          ease: "linear",
-        },
-        filter: { duration: 3, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
+  const wildGradientBorderAnimate = {
+    background:
+      "linear-gradient(120deg, #ff8c43, #6c63ff, #43e8ff, #ff43c6, #ff8c43)",
+    backgroundSize: "400% 400%",
+    filter: [
+      "blur(8px)",
+      "blur(12px)",
+      "blur(8px)"
+    ],
+    transition: {
+      backgroundPosition: {
+        duration: 16,
+        repeat: Infinity,
+        ease: "linear",
       },
+      filter: { duration: 3, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
     },
   };
 
@@ -189,14 +196,14 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="text-primary hover:border-primary border-primary-light hover:text-primary-dark rounded-md border p-1.5 transition-all shadow-sm relative overflow-hidden"
                   style={{ willChange: "transform" }}
-                  initial={iconWild.initial}
-                  animate={iconWild.animate}
+                  initial={iconWildInitial}
+                  animate={iconWildAnimate}
                   transition={{
-                    ...iconWild.transition,
+                    ...iconWildTransition,
                     delay: 0.9 + idx * 0.15,
                   }}
-                  whileHover={iconWild.whileHover}
-                  whileTap={iconWild.whileTap}
+                  whileHover={iconWildWhileHover}
+                  whileTap={iconWildWhileTap}
                 >
                   <span className="absolute inset-0 z-0 bg-gradient-to-br from-pink-400 via-sky-400 to-amber-400 opacity-30 blur-[6px] pointer-events-none"></span>
                   <span className="relative z-10">{link.icon}</span>
@@ -213,8 +220,7 @@ export default function Home() {
           >
             <motion.span
               className="absolute inset-0 z-0 rounded-2xl"
-              variants={wildGradientBorder}
-              animate="animate"
+              animate={wildGradientBorderAnimate}
               style={{
                 background:
                   "linear-gradient(120deg, #ff8c43, #6c63ff, #43e8ff, #ff43c6, #ff8c43)",
@@ -225,8 +231,7 @@ export default function Home() {
             ></motion.span>
             <motion.div
               className="relative z-10"
-              variants={floatPulse}
-              animate="animate"
+              animate={floatPulse.animate}
             >
               <Image
                 src={profilePic}
