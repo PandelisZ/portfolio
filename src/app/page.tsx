@@ -56,6 +56,7 @@ const experience = [
 
 export default function Home() {
   // Animation variants for "wild" effects
+  // Only define staggerContainer ONCE!
   const staggerContainer = {
     hidden: {},
     show: {
@@ -66,13 +67,15 @@ export default function Home() {
     },
   };
 
-  // Framer Motion animation variants and props
-  const staggerContainer = {
-    hidden: {},
-    show: {
+  const floatPulse = {
+    animate: {
+      y: [0, -10, 0, 10, 0],
+      rotate: [0, 5, 0, -5, 0],
+      scale: [1, 1.05, 1, 0.98, 1],
       transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.3,
+        duration: 4,
+        repeat: Infinity,
+        ease: "easeInOut",
       },
     },
   };
