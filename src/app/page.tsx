@@ -56,26 +56,13 @@ const experience = [
 
 export default function Home() {
   // Animation variants for "wild" effects
-  // Only define staggerContainer ONCE!
+  // Only define each variant ONCE!
   const staggerContainer = {
     hidden: {},
     show: {
       transition: {
         staggerChildren: 0.12,
         delayChildren: 0.3,
-      },
-    },
-  };
-
-  const floatPulse = {
-    animate: {
-      y: [0, -10, 0, 10, 0],
-      rotate: [0, 5, 0, -5, 0],
-      scale: [1, 1.05, 1, 0.98, 1],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut",
       },
     },
   };
@@ -111,6 +98,25 @@ export default function Home() {
     scale: 0.9,
     rotate: -10,
     transition: { type: "spring", stiffness: 300, damping: 15 },
+  };
+
+  const wildGradientBorderAnimate = {
+    background:
+      "linear-gradient(120deg, #ff8c43, #6c63ff, #43e8ff, #ff43c6, #ff8c43)",
+    backgroundSize: "400% 400%",
+    filter: [
+      "blur(8px)",
+      "blur(12px)",
+      "blur(8px)"
+    ],
+    transition: {
+      backgroundPosition: {
+        duration: 16,
+        repeat: Infinity,
+        ease: "linear",
+      },
+      filter: { duration: 3, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
+    },
   };
 
   const wildGradientBorderAnimate = {
